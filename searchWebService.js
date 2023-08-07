@@ -17,7 +17,6 @@ class GetFics {
         const page = await browser.newPage();
         const pageJQ = (0, puppeteer_jquery_1.pageExtend)(page);
         const preliminaryAO3 = 'https://archiveofourown.org/works/search';
-        await pageJQ.setCacheEnabled(false);
         await pageJQ.goto(preliminaryAO3);
         await pageJQ.type('#work_search_fandom_names_autocomplete', text);
         await pageJQ.waitForjQuery("p:contains('No suggestions found'), #new_work_search > fieldset:nth-child(2) > dl > dd:nth-child(2) > ul > li > div > ul");
@@ -37,7 +36,6 @@ class GetFics {
         const page = await browser.newPage();
         const pageJQ = (0, puppeteer_jquery_1.pageExtend)(page);
         const preliminaryAO3 = 'https://archiveofourown.org/works/search';
-        await pageJQ.setCacheEnabled(false);
         await pageJQ.goto(preliminaryAO3);
         await pageJQ.type('#work_search_freeform_names_autocomplete', text);
         await pageJQ.waitForjQuery("p:contains('No suggestions found'), #new_work_search > fieldset:nth-child(2) > dl > dd:nth-child(14) > ul > li > div > ul");
@@ -57,7 +55,6 @@ class GetFics {
         const page = await browser.newPage();
         const pageJQ = (0, puppeteer_jquery_1.pageExtend)(page);
         const preliminaryAO3 = 'https://archiveofourown.org/works/search';
-        await pageJQ.setCacheEnabled(false);
         await pageJQ.goto(preliminaryAO3);
         await pageJQ.type('#work_search_character_names_autocomplete', text);
         await pageJQ.waitForjQuery("p:contains('No suggestions found'), #new_work_search > fieldset:nth-child(2) > dl > dd:nth-child(10) > ul > li > div > ul");
@@ -77,7 +74,6 @@ class GetFics {
         const page = await browser.newPage();
         const pageJQ = (0, puppeteer_jquery_1.pageExtend)(page);
         const preliminaryAO3 = 'https://archiveofourown.org/works/search';
-        await pageJQ.setCacheEnabled(false);
         await pageJQ.goto(preliminaryAO3);
         await pageJQ.type('#work_search_relationship_names_autocomplete', text);
         await pageJQ.waitForjQuery("p:contains('No suggestions found'), #new_work_search > fieldset:nth-child(2) > dl > dd:nth-child(12) > ul > li > div > ul");
@@ -96,9 +92,8 @@ class GetFics {
     async getFicText(url) {
         const browser = await puppeteer_extra_1.default.launch();
         const page = await browser.newPage();
-        await page.setCacheEnabled(false);
         await page.goto(url);
-        const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+        //const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
         // await delay(2000);
         // await page.waitForSelector('#tos_agree', { timeout: 2000 });
         // try {
@@ -109,22 +104,22 @@ class GetFics {
         // try {
         //   await page.click('#accept_tos');
         // } catch (err) { }
-        await delay(100);
+        //await delay(100);
         let caution = await page.$('p.caution');
-        await delay(100);
+        //await delay(100);
         if (caution) {
             await page.click('#main > ul > li:nth-child(1)');
         }
-        await delay(200);
+        //await delay(200);
         let entire = await page.$('li.chapter.entire');
-        await delay(200);
+        //await delay(200);
         if (entire) {
             try {
                 await page.click('li.chapter.entire');
             }
             catch (err) { }
-            console.log("Pressed");
-            await delay(1500);
+            //console.log("Pressed");
+            //await delay(1500);
             const chapters = await page.$$('div#chapters > .chapter');
             console.log("Chapters fetched:", chapters.length);
             let full = [];
@@ -144,7 +139,7 @@ class GetFics {
             return full;
         }
         else {
-            console.log("Not pressed");
+            //console.log("Not pressed");
             const textField = await page.$$("div[role='article'] > div > p");
             let text;
             text = [];
@@ -176,14 +171,14 @@ class GetFics {
             `${filterTags?.join(',') ?? ''}&work_search%5Bhits%5D=&work_search%5Bkudos_count%5D=&work_search%5Bcomments_count%5D=&work_search%5Bbookmarks_count%5D=&work_search%5Bsort_column%5D=_score&work_search%5Bsort_direction%5D=desc`;
         //const fnurl = `https://www.fanfiction.net/search/?keywords=Fire+Nation&type=story&match=any&formatid=any&sort=0&genreid1=0&genreid2=0&characterid1=0&characterid2=0&characterid3=0&characterid4=0&words=0&ready=1&categoryid=2002#`;
         await page.goto(ao3url);
-        const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
-        await delay(2000);
+        //const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+        //await delay(2000);
         await page.waitForSelector('#tos_agree', { timeout: 2000 });
         try {
             await page.click('#tos_agree');
         }
         catch (err) { }
-        await delay(300);
+        //await delay(300);
         await page.waitForSelector('#accept_tos', { timeout: 200 });
         try {
             await page.click('#accept_tos');
