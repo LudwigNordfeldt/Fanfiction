@@ -17,6 +17,7 @@ class GetFics {
         const page = await browser.newPage();
         const pageJQ = (0, puppeteer_jquery_1.pageExtend)(page);
         const preliminaryAO3 = 'https://archiveofourown.org/works/search';
+        await pageJQ.setCacheEnabled(false);
         await pageJQ.goto(preliminaryAO3);
         await pageJQ.type('#work_search_fandom_names_autocomplete', text);
         await pageJQ.waitForjQuery("p:contains('No suggestions found'), #new_work_search > fieldset:nth-child(2) > dl > dd:nth-child(2) > ul > li > div > ul");
@@ -36,6 +37,7 @@ class GetFics {
         const page = await browser.newPage();
         const pageJQ = (0, puppeteer_jquery_1.pageExtend)(page);
         const preliminaryAO3 = 'https://archiveofourown.org/works/search';
+        await pageJQ.setCacheEnabled(false);
         await pageJQ.goto(preliminaryAO3);
         await pageJQ.type('#work_search_freeform_names_autocomplete', text);
         await pageJQ.waitForjQuery("p:contains('No suggestions found'), #new_work_search > fieldset:nth-child(2) > dl > dd:nth-child(14) > ul > li > div > ul");
@@ -55,6 +57,7 @@ class GetFics {
         const page = await browser.newPage();
         const pageJQ = (0, puppeteer_jquery_1.pageExtend)(page);
         const preliminaryAO3 = 'https://archiveofourown.org/works/search';
+        await pageJQ.setCacheEnabled(false);
         await pageJQ.goto(preliminaryAO3);
         await pageJQ.type('#work_search_character_names_autocomplete', text);
         await pageJQ.waitForjQuery("p:contains('No suggestions found'), #new_work_search > fieldset:nth-child(2) > dl > dd:nth-child(10) > ul > li > div > ul");
@@ -74,6 +77,7 @@ class GetFics {
         const page = await browser.newPage();
         const pageJQ = (0, puppeteer_jquery_1.pageExtend)(page);
         const preliminaryAO3 = 'https://archiveofourown.org/works/search';
+        await pageJQ.setCacheEnabled(false);
         await pageJQ.goto(preliminaryAO3);
         await pageJQ.type('#work_search_relationship_names_autocomplete', text);
         await pageJQ.waitForjQuery("p:contains('No suggestions found'), #new_work_search > fieldset:nth-child(2) > dl > dd:nth-child(12) > ul > li > div > ul");
@@ -92,6 +96,7 @@ class GetFics {
     async getFicText(url) {
         const browser = await puppeteer_extra_1.default.launch();
         const page = await browser.newPage();
+        await page.setCacheEnabled(false);
         await page.goto(url);
         const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
         // await delay(2000);
