@@ -185,15 +185,16 @@ class GetFics {
         }
         catch (err) { }
         let fics = [];
-        for (let i = 0; i < fetchesNumber; i++) {
-            //await page.waitForSelector('.next');
-            await this.fetchFictions(fics, page);
-            try {
-                await page.click('.next');
-            }
-            catch (err) { }
-        }
+        // for (let i = 0; i < fetchesNumber; i++) {
+        //     //await page.waitForSelector('.next');
+        //     await this.fetchFictions(fics, page);
+        //     try {
+        //         await page.click('.next');
+        //     }
+        //     catch (err) { }
+        // }
 
+        await this.fetchFictions(fics, page);
         await page.close()
         await browser.close()
         return fics;
