@@ -23,6 +23,8 @@ class GetFics {
         const fs = await pageJQ.$$('#new_work_search > fieldset:nth-child(2) > dl > dd:nth-child(2) > ul > li > div > ul > li');
         return Promise.all(fs.map(async (f) => {
             const ff = await f?.getProperty('textContent');
+            await page.close()
+            await browser.close()
             return ff?.toString().slice(9);
         }));
     }
@@ -40,6 +42,8 @@ class GetFics {
         const fs = await pageJQ.$$('#new_work_search > fieldset:nth-child(2) > dl > dd:nth-child(14) > ul > li > div > ul > li');
         return Promise.all(fs.map(async (f) => {
             const ff = await f?.getProperty('textContent');
+            await page.close()
+            await browser.close()
             return ff?.toString().slice(9);
         }));
     }
@@ -57,6 +61,8 @@ class GetFics {
         const fs = await pageJQ.$$('#new_work_search > fieldset:nth-child(2) > dl > dd:nth-child(10) > ul > li > div > ul > li');
         return Promise.all(fs.map(async (f) => {
             const ff = await f?.getProperty('textContent');
+            await page.close()
+            await browser.close()
             return ff?.toString().slice(9);
         }));
     }
@@ -74,6 +80,8 @@ class GetFics {
         const fs = await pageJQ.$$('#new_work_search > fieldset:nth-child(2) > dl > dd:nth-child(12) > ul > li > div > ul > li');
         return Promise.all(fs.map(async (f) => {
             const ff = await f?.getProperty('textContent');
+            await page.close()
+            await browser.close()
             return ff?.toString().slice(9);
         }));
     }
@@ -125,6 +133,9 @@ class GetFics {
                 }
                 full.push(text);
             }
+            await page.close()
+            await browser.close()
+
             return full;
         }
         else {
@@ -138,6 +149,10 @@ class GetFics {
                 text.push(this.sanitizeString(JSON.stringify(sText)));
             }
             full.push(text);
+
+            await page.close()
+            await browser.close()
+
             return full;
         }
         // div#chapters > .chapter
@@ -178,7 +193,9 @@ class GetFics {
             }
             catch (err) { }
         }
-        await browser.close();
+
+        await page.close()
+        await browser.close()
         return fics;
     }
     async fetchFictions(fics, page) {
