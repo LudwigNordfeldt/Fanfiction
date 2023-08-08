@@ -8,23 +8,19 @@ const puppeteer_extra_1 = __importDefault(require("puppeteer-extra"));
 const puppeteer_jquery_1 = require("puppeteer-jquery");
 const puppeteer_extra_plugin_stealth_1 = __importDefault(require("puppeteer-extra-plugin-stealth"));
 puppeteer_extra_1.default.use((0, puppeteer_extra_plugin_stealth_1.default)());
+let browser;
 let page;
 let pageJQ;
-async function getPage() {
-    if (!page) {
-        const browser = await puppeteer_extra_1.default.launch();
-        page = await browser.pages()[0];
-        console.log(page);
-        pageJQ = (0, puppeteer_jquery_1.pageExtend)(page);
-    }
-    return { page, pageJQ };
-}
 class GetFics {
     async getFandoms(text) {
         if (!text?.length) {
             return [];
         }
-        let { page, pageJQ } = await getPage();
+        if (!browser) {
+            browser = await puppeteer_extra_1.default.launch();
+            page = await browser.newPage();
+            pageJQ = (0, puppeteer_jquery_1.pageExtend)(page);
+        }
         const preliminaryAO3 = "https://archiveofourown.org/works/search";
         await pageJQ.goto(preliminaryAO3);
         await pageJQ.type("#work_search_fandom_names_autocomplete", text);
@@ -39,7 +35,11 @@ class GetFics {
         if (!text?.length) {
             return [];
         }
-        let { page, pageJQ } = await getPage();
+        if (!browser) {
+            browser = await puppeteer_extra_1.default.launch();
+            page = await browser.newPage();
+            pageJQ = (0, puppeteer_jquery_1.pageExtend)(page);
+        }
         const preliminaryAO3 = "https://archiveofourown.org/works/search";
         await pageJQ.goto(preliminaryAO3);
         await pageJQ.type("#work_search_freeform_names_autocomplete", text);
@@ -54,7 +54,11 @@ class GetFics {
         if (!text?.length) {
             return [];
         }
-        let { page, pageJQ } = await getPage();
+        if (!browser) {
+            browser = await puppeteer_extra_1.default.launch();
+            page = await browser.newPage();
+            pageJQ = (0, puppeteer_jquery_1.pageExtend)(page);
+        }
         const preliminaryAO3 = "https://archiveofourown.org/works/search";
         await pageJQ.goto(preliminaryAO3);
         await pageJQ.type("#work_search_character_names_autocomplete", text);
@@ -69,7 +73,11 @@ class GetFics {
         if (!text?.length) {
             return [];
         }
-        let { page, pageJQ } = await getPage();
+        if (!browser) {
+            browser = await puppeteer_extra_1.default.launch();
+            page = await browser.newPage();
+            pageJQ = (0, puppeteer_jquery_1.pageExtend)(page);
+        }
         const preliminaryAO3 = "https://archiveofourown.org/works/search";
         await pageJQ.goto(preliminaryAO3);
         await pageJQ.type("#work_search_relationship_names_autocomplete", text);
@@ -85,8 +93,12 @@ class GetFics {
         return str.trim();
     }
     async getFicText(url) {
-        let { page, pageJQ } = await getPage();
-        await page.goto(url);
+        if (!browser) {
+            browser = await puppeteer_extra_1.default.launch();
+            page = await browser.newPage();
+            pageJQ = (0, puppeteer_jquery_1.pageExtend)(page);
+        }
+        await pageJQ.goto(url);
         //const delay = (milliseconds: number | undefined) => new Promise((resolve) => setTimeout(resolve, milliseconds));
         // await delay(2000);
         // await page.waitForSelector('#tos_agree', { timeout: 2000 });
@@ -99,22 +111,26 @@ class GetFics {
         //   await page.click('#accept_tos');
         // } catch (err) { }
         //await delay(100);
-        let caution = await page.$("p.caution");
+        await pageJQ.waitForjQuery("p.caution, li.chapter");
+        let caution = await pageJQ.$("p.caution");
         //await delay(100);
         if (caution) {
-            await page.click("#main > ul > li:nth-child(1)");
+            await pageJQ.click("#main > ul > li:nth-child(1)");
+            await pageJQ.waitForjQuery('li.chapter');
         }
         //await delay(200);
-        let entire = await page.$("li.chapter.entire");
+        let entire = await pageJQ.$("li.chapter.entire");
         //await delay(200);
         if (entire) {
             try {
-                await page.click("li.chapter.entire");
+                await pageJQ.click("li.chapter.entire");
+                await pageJQ.waitForjQuery("div#chapters > .chapter");
+                await page.waitForTimeout(800);
             }
             catch (err) { }
             console.log("Pressed");
             //await delay(1500);
-            const chapters = await page.$$("div#chapters > .chapter");
+            const chapters = await (await page.$$("div#chapters > .chapter"));
             console.log("Chapters fetched:", chapters.length);
             let full = [];
             for (let c of chapters) {
@@ -131,7 +147,7 @@ class GetFics {
         }
         else {
             console.log("Not pressed");
-            const textField = await page.$$("div[role='article'] > div > p");
+            const textField = await pageJQ.$$("div[role='article'] > div > p");
             let text;
             text = [];
             let full = [];
@@ -145,7 +161,11 @@ class GetFics {
         // div#chapters > .chapter
     }
     async getFictions(title, author, summary, characters, relationships, filterTags, fandom, fetchesNumber) {
-        let { page, pageJQ } = await getPage();
+        if (!browser) {
+            browser = await puppeteer_extra_1.default.launch();
+            page = await browser.newPage();
+            pageJQ = (0, puppeteer_jquery_1.pageExtend)(page);
+        }
         //const preliminaryFF = 'https://www.fanfiction.net/search/?popup=1';
         const ao3url = `https://archiveofourown.org/works/search?commit=Search&work_search%5Bquery%5D=` +
             `${summary ?? ""}&work_search%5Btitle%5D=` +
