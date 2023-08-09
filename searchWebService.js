@@ -176,6 +176,7 @@ class GetFics {
             `&work_search%5Bfreeform_names%5D=` +
             `${filterTags?.join(",") ?? ""}&work_search%5Bhits%5D=&work_search%5Bkudos_count%5D=&work_search%5Bcomments_count%5D=&work_search%5Bbookmarks_count%5D=&work_search%5Bsort_column%5D=_score&work_search%5Bsort_direction%5D=desc`;
         //const fnurl = `https://www.fanfiction.net/search/?keywords=Fire+Nation&type=story&match=any&formatid=any&sort=0&genreid1=0&genreid2=0&characterid1=0&characterid2=0&characterid3=0&characterid4=0&words=0&ready=1&categoryid=2002#`;
+        console.log("Link: ", ao3url);
         await page.goto(ao3url);
         //const delay = (milliseconds: number | undefined) => new Promise((resolve) => setTimeout(resolve, milliseconds));
         //await delay(2000);
@@ -183,13 +184,13 @@ class GetFics {
         try {
             await page.click("#tos_agree");
         }
-        catch (err) { }
+        catch (err) { console.log(err) }
         //await delay(300);
         await page.waitForSelector("#accept_tos", { timeout: 200 });
         try {
             await page.click("#accept_tos");
         }
-        catch (err) { }
+        catch (err) { console.log(err) }
         let fics = [];
         for (let i = 0; i < fetchesNumber; i++) {
             //await page.waitForSelector('.next');
@@ -197,7 +198,7 @@ class GetFics {
             try {
                 await page.click(".next");
             }
-            catch (err) { }
+            catch (err) { console.log(err) }
         }
         return fics;
     }
